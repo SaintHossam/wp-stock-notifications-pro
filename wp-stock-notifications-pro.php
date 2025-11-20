@@ -25,10 +25,33 @@ define('WP_STOCK_NOTIFICATIONS_PRO_VERSION', '1.0.0');
 define('WP_STOCK_NOTIFICATIONS_PRO_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WP_STOCK_NOTIFICATIONS_PRO_PLUGIN_URL', plugin_dir_url(__FILE__));
 
-// Load Composer autoloader
-if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-    require_once __DIR__ . '/vendor/autoload.php';
+// Check for Composer autoloader
+if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
+    add_action('admin_notices', function() {
+        echo '<div class="notice notice-error is-dismissible">';
+        echo '<p><strong>Stock Notifications Pro:</strong> ';
+        echo esc_html__('Missing dependencies. Please run', 'stock-notifier');
+        echo ' <code>composer install --no-dev</code> ';
+        echo esc_html__('in the plugin directory:', 'stock-notifier');
+        echo ' <code>' . esc_html(plugin_dir_path(__FILE__)) . '</code></p>';
+        echo '<p>' . esc_html__('For more information, visit:', 'stock-notifier');
+        echo ' <a href="https://getcomposer.org/" target="_blank">https://getcomposer.org/</a></p>';
+        echo '</div>';
+    });
+    
+    // Deactivate the plugin
+    add_action('admin_init', function() {
+        deactivate_plugins(plugin_basename(__FILE__));
+        if (isset($_GET['activate'])) {
+            unset($_GET['activate']);
+        }
+    });
+    
+    return;
 }
+
+// Load Composer autoloader
+require_once __DIR__ . '/vendor/autoload.php';
 
 // Activation hook
 register_activation_hook(__FILE__, array('WPStockNotificationsPro\Activator', 'activate'));
@@ -51,4 +74,3 @@ add_action('plugins_loaded', function () {
     // Initialize the main plugin class
     \WPStockNotificationsPro\Plugin::get_instance();
 });
-
