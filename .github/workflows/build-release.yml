@@ -11,6 +11,10 @@ jobs:
     name: Build Release Artifact
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: write  # Needed for creating releases and uploading assets
+      actions: read    # Needed for accessing workflow artifacts
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
