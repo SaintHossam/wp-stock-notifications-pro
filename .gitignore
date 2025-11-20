@@ -1,0 +1,27 @@
+# Composer
+/vendor/
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+/node_modules/
+/dist/
+/build/
+/release/
+*.zip
+
+# Testing
+/phpunit.xml
+/.phpunit.cache/
+
+# Logs
+*.log
+error_log
