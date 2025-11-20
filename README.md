@@ -470,6 +470,25 @@ Please ensure:
 - Changes are backward compatible
 - Update README if needed
 
+**Testing the Release Workflow:**
+
+You can manually test the workflow before tagging:
+
+```bash
+# Install dependencies
+composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+# Create release structure
+mkdir -p release
+rsync -av --exclude='.git' --exclude='.github' --exclude='release' --exclude='composer.lock' --exclude='.gitignore' ./ release/wp-stock-notifications-pro/
+
+# Create ZIP
+cd release && zip -r ../wp-stock-notifications-pro.zip wp-stock-notifications-pro/
+
+# Verify the ZIP contains vendor/autoload.php
+unzip -l ../wp-stock-notifications-pro.zip | grep "vendor/autoload.php"
+```
+
 ---
 
 ## Testing
