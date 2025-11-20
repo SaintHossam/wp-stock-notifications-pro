@@ -48,30 +48,41 @@ The plugin has been completely refactored into a modern, maintainable structure 
 
 ## Installation
 
-### Standard Installation (Production)
+### For End Users (Recommended)
 
-1. Download or clone the repository into:  
-   `wp-content/plugins/wp-stock-notifications-pro/`
+**⚠️ Important:** Do not download the repository source ZIP directly. Use the pre-built release instead.
 
-2. Run Composer to generate the autoloader:
-   ```bash
-   cd wp-content/plugins/wp-stock-notifications-pro/
-   composer install --no-dev
-   ```
+1. Go to the [Releases page](https://github.com/SaintHossam/wp-stock-notifications-pro/releases)
+2. Download the latest `wp-stock-notifications-pro.zip` file from the release assets
+3. In **WordPress Admin → Plugins → Add New → Upload Plugin**
+4. Upload the downloaded ZIP file
+5. Click **Activate Plugin**
+6. Navigate to **إشعارات المخزون** in the admin menu to configure settings
 
-3. In **WP Admin → Plugins**, activate **Stock Notifications Pro**
+The release ZIP includes all necessary dependencies pre-built. No command-line tools or Composer installation required!
 
-4. Navigate to **إشعارات المخزون** in the admin menu to configure settings
+### For Developers
 
-### Development Installation
+If you want to contribute or modify the plugin:
 
 ```bash
+# Clone the repository
 git clone https://github.com/SaintHossam/wp-stock-notifications-pro.git
 cd wp-stock-notifications-pro
+
+# Install dependencies (includes dev dependencies for testing)
 composer install
+
+# For production build without dev dependencies
+composer install --no-dev
 ```
 
 Then activate the plugin through WordPress admin panel.
+
+**Building a Release:**
+- The GitHub Actions workflow automatically builds release artifacts when you push a tag (e.g., `v1.0.1`)
+- You can also manually trigger the workflow from the Actions tab
+- The workflow creates a ZIP file with `vendor/` directory included
 
 ---
 
