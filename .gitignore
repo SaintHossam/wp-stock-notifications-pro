@@ -1,6 +1,5 @@
 # Composer
 /vendor/
-composer.lock
 
 # IDE
 .idea/
@@ -16,6 +15,8 @@ Thumbs.db
 /node_modules/
 /dist/
 /build/
+/release/
+*.zip
 
 # Testing
 /phpunit.xml

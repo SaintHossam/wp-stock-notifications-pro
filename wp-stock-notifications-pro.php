@@ -30,12 +30,20 @@ if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
     add_action('admin_notices', function() {
         echo '<div class="notice notice-error is-dismissible">';
         echo '<p><strong>Stock Notifications Pro:</strong> ';
-        echo esc_html__('Missing dependencies. Please run', 'stock-notifier');
+        echo esc_html__('Missing dependencies. This plugin requires the Composer autoloader.', 'stock-notifier');
+        echo '</p>';
+        echo '<p><strong>' . esc_html__('For Users:', 'stock-notifier') . '</strong> ';
+        echo esc_html__('Please download the pre-built release from', 'stock-notifier');
+        echo ' <a href="https://github.com/SaintHossam/wp-stock-notifications-pro/releases" target="_blank">';
+        echo esc_html__('GitHub Releases', 'stock-notifier');
+        echo '</a> ';
+        echo esc_html__('instead of the repository source ZIP.', 'stock-notifier');
+        echo '</p>';
+        echo '<p><strong>' . esc_html__('For Developers:', 'stock-notifier') . '</strong> ';
+        echo esc_html__('Run', 'stock-notifier');
         echo ' <code>composer install --no-dev</code> ';
         echo esc_html__('in the plugin directory:', 'stock-notifier');
         echo ' <code>' . esc_html(plugin_dir_path(__FILE__)) . '</code></p>';
-        echo '<p>' . esc_html__('For more information, visit:', 'stock-notifier');
-        echo ' <a href="https://getcomposer.org/" target="_blank">https://getcomposer.org/</a></p>';
         echo '</div>';
     });
     
