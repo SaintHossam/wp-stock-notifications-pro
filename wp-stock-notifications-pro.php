@@ -21,9 +21,15 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('WP_STOCK_NOTIFICATIONS_PRO_VERSION', '1.0.0');
-define('WP_STOCK_NOTIFICATIONS_PRO_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('WP_STOCK_NOTIFICATIONS_PRO_PLUGIN_URL', plugin_dir_url(__FILE__));
+if (!defined('WP_STOCK_NOTIFICATIONS_PRO_VERSION')) {
+    define('WP_STOCK_NOTIFICATIONS_PRO_VERSION', '1.0.0');
+}
+if (!defined('WP_STOCK_NOTIFICATIONS_PRO_PLUGIN_DIR')) {
+    define('WP_STOCK_NOTIFICATIONS_PRO_PLUGIN_DIR', plugin_dir_path(__FILE__));
+}
+if (!defined('WP_STOCK_NOTIFICATIONS_PRO_PLUGIN_URL')) {
+    define('WP_STOCK_NOTIFICATIONS_PRO_PLUGIN_URL', plugin_dir_url(__FILE__));
+}
 
 // Check for Composer autoloader
 if (!file_exists(__DIR__ . '/vendor/autoload.php')) {

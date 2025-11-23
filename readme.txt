@@ -61,20 +61,41 @@ Back-in-stock alerts for WooCommerce. Let customers subscribe to out-of-stock pr
 
 == Installation ==
 
-= Automatic Installation =
+= Automatic Installation (Recommended for End Users) =
 
 1. Log in to your WordPress admin panel
 2. Go to **Plugins > Add New**
 3. Search for "Stock Notifications Pro"
 4. Click **Install Now** and then **Activate**
 
-= Manual Installation =
+= Manual Installation - Pre-built Release ZIP (Recommended) =
 
-1. Download the plugin ZIP file
+**For end users:** Download a pre-built release ZIP that includes all dependencies.
+
+1. Download the pre-built ZIP from [GitHub Releases](https://github.com/SaintHossam/wp-stock-notifications-pro/releases) or WordPress.org
 2. Log in to your WordPress admin panel
 3. Go to **Plugins > Add New > Upload Plugin**
 4. Choose the downloaded ZIP file and click **Install Now**
 5. After installation, click **Activate Plugin**
+
+The pre-built ZIP includes all necessary dependencies in the `vendor/` directory.
+
+= Manual Installation - GitHub Source ZIP (For Developers) =
+
+**For developers:** If you download the source code directly from GitHub:
+
+1. Download or clone the repository from GitHub
+2. Run `composer install --no-dev` in the plugin directory to install dependencies
+3. Create a ZIP file including the generated `vendor/` directory
+4. Upload and activate via **Plugins > Add New > Upload Plugin**
+
+**Important:** If you upload the raw GitHub source ZIP without running `composer install`, the plugin will:
+- Display an admin notice explaining that dependencies are missing
+- Provide instructions for proper installation
+- Automatically deactivate itself to prevent errors
+- Not cause any fatal errors or break your site
+
+This safety mechanism ensures the plugin fails gracefully if dependencies are missing.
 
 = After Activation =
 
@@ -101,17 +122,28 @@ Yes! You can customize the email subject template, success/error messages, butto
 
 = What happens when I deactivate the plugin? =
 
-Deactivation only clears temporary data (transients). Your subscription data and settings are preserved so you can reactivate the plugin without losing data.
+**Deactivation** (disabling the plugin without deleting it):
+- Clears temporary data (transients) only
+- Preserves all subscription data in the database
+- Preserves all plugin settings
+- You can reactivate without losing any data
 
 = What happens when I delete the plugin? =
 
-When you delete (uninstall) the plugin from the WordPress admin, all plugin data is permanently removed, including:
-* Custom database table (wp_stock_notifications)
-* Plugin settings (snp_options)
-* All subscription requests
-* Temporary data (transients)
+**Deletion/Uninstall** (complete removal from WordPress):
 
-This ensures a clean removal if you decide the plugin isn't right for you.
+When you delete the plugin from the WordPress admin (**Plugins > Installed Plugins > Delete**), all plugin data is permanently removed:
+
+* Custom database table (`{prefix}stock_notifications`) with all subscription requests
+* Plugin settings (`snp_options` option)
+* All temporary data (transients like `snp_table_checked`)
+
+**Important:** The uninstall process works safely whether or not Composer dependencies are present:
+- If dependencies are available, it uses the Schema class to drop the table
+- If dependencies are missing, it falls back to direct database queries
+- The uninstall never fails or causes errors, ensuring clean plugin removal
+
+This ensures complete cleanup and respects WordPress.org guidelines for proper plugin uninstallation.
 
 = Does this work with variable products? =
 
@@ -210,6 +242,19 @@ For support, bug reports, or feature requests:
 == Developer Information ==
 
 This plugin follows WordPress and WooCommerce coding standards and uses a modern PSR-4 autoloading structure. Developers can extend the plugin using standard WordPress hooks and filters.
+
+**Technical Details:**
+- **Text Domain**: `stock-notifier` - Used consistently across all translatable strings
+- **Namespace**: `WPStockNotificationsPro`
+- **Autoloading**: PSR-4 via Composer
+- **Database Table**: `{prefix}stock_notifications`
+- **Options**: `snp_options` (plugin settings), `snp_table_checked` (transient)
+
+**For Developers:**
+- Clone from GitHub: https://github.com/SaintHossam/wp-stock-notifications-pro
+- Run `composer install --no-dev` to generate the autoloader
+- The plugin gracefully handles missing dependencies with clear error messages
+- All translatable strings use the `stock-notifier` text domain
 
 For more information, visit: https://github.com/SaintHossam/wp-stock-notifications-pro
 
