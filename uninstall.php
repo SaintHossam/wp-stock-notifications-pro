@@ -19,6 +19,9 @@ delete_option('snp_options');
 delete_transient('snp_table_checked');
 
 // Drop database table
+global $wpdb;
+$table_name = $wpdb->prefix . 'stock_notifications';
+
 // Try to use the Schema class if autoloader is available, otherwise use direct SQL
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
@@ -27,15 +30,13 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
         WPStockNotificationsPro\Database\Schema::drop_table();
     } else {
         // Fallback to direct SQL if class cannot be loaded
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'stock_notifications';
-        $wpdb->query("DROP TABLE IF EXISTS {$table_name}");
+        // Table name is safe as it's constructed from trusted $wpdb->prefix and hardcoded string
+        $wpdb->query("DROP TABLE IF EXISTS `{$table_name}`");
     }
 } else {
     // Fallback to direct SQL when autoloader is not available
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'stock_notifications';
-    $wpdb->query("DROP TABLE IF EXISTS {$table_name}");
+    // Table name is safe as it's constructed from trusted $wpdb->prefix and hardcoded string
+    $wpdb->query("DROP TABLE IF EXISTS `{$table_name}`");
 }
 
 // Delete any post meta if stored
