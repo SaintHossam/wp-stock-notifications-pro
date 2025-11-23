@@ -382,6 +382,37 @@ apply_filters('snp_email_headers', $headers, $product, $subscriber);
 
 ---
 
+## Plugin Lifecycle
+
+### Activation
+
+When the plugin is activated:
+- Creates custom database table (`wp_stock_notifications`)
+- Sets default plugin options (SMTP settings, email templates, messages)
+- Clears any existing transients
+- No data loss occurs on reactivation
+
+### Deactivation
+
+When the plugin is deactivated:
+- Clears temporary data (transients only)
+- **Preserves** all subscription data and settings
+- Data remains intact for potential reactivation
+- No permanent data is deleted
+
+### Uninstallation (Complete Removal)
+
+When the plugin is **deleted** from WordPress admin:
+- Permanently removes custom database table (`wp_stock_notifications`)
+- Deletes all plugin settings (`snp_options`)
+- Removes all subscription requests
+- Clears all transients
+- Ensures clean removal with no leftover data
+
+**Important:** The uninstall process is designed to work reliably even if the plugin was installed from a source ZIP without dependencies. The plugin will gracefully handle missing autoloader during deletion.
+
+---
+
 ## Privacy & GDPR
 
 This plugin stores the following user data:
