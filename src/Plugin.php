@@ -118,7 +118,7 @@ class Plugin {
         load_plugin_textdomain(
             self::TEXT_DOMAIN,
             false,
-            dirname(plugin_basename(__FILE__)) . '/../languages'
+            dirname(dirname(plugin_basename(__FILE__))) . '/languages'
         );
     }
 
