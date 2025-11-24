@@ -5,7 +5,7 @@ Back-in-stock alerts for WooCommerce. Let shoppers subscribe to out-of-stock pro
 - **Author:** Hossam Hamdy (SaintHossam)  
 - **Plugin URI:** https://github.com/SaintHossam/wp-stock-notifications-pro  
 - **Author URI:** https://github.com/SaintHossam/  
-- **Text Domain:** `stock-notifier`
+- **Text Domain:** `wp-stock-notifications-pro`
 - **Version:** 1.0.0
 - **License:** GPL-2.0-or-later
 
