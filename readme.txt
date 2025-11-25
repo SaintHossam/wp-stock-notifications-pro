@@ -1,12 +1,14 @@
 === Stock Notifications Pro ===
 Contributors: sainthossam
-Tags: woocommerce, stock, notifications, email, out-of-stock, back-in-stock, alerts
+Donate link:
+Tags: woocommerce, stock, back-in-stock, email, notifications
 Requires at least: 5.8
-Tested up to: 6.4
+Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.0.0
-License: GPL-2.0-or-later
+License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
 
 Back-in-stock alerts for WooCommerce. Let customers subscribe to out-of-stock products and automatically notify them when items are restocked.
 
@@ -106,7 +108,7 @@ Deactivation only clears temporary data (transients). Your subscription data and
 = What happens when I delete the plugin? =
 
 When you delete (uninstall) the plugin from the WordPress admin, all plugin data is permanently removed, including:
-* Custom database table (wp_stock_notifications)
+* Custom database table (stock_notifications)
 * Plugin settings (snp_options)
 * All subscription requests
 * Temporary data (transients)
@@ -163,7 +165,7 @@ Absolutely! The plugin is translation-ready with the `stock-notifier` text domai
 = 1.0.0 - 2025-11-20 =
 * **Major Release** - Complete plugin refactoring
 * Implemented PSR-4 compliant architecture
-* Added proper namespace structure (WPStockNotificationsPro)
+* Added proper namespace structure (StockNotificationsPro)
 * Organized code into modular classes (Admin, Public, Mail, Database, Helpers)
 * Introduced Composer for dependency management
 * Created dedicated template system for emails and forms
@@ -194,7 +196,7 @@ Stock Notifications Pro collects and stores the following customer information w
 * Notification status - To track if notification has been sent
 
 This data is:
-* Stored in a custom database table (wp_stock_notifications)
+* Stored in a custom database table (stock_notifications)
 * Used solely for sending one-time back-in-stock notifications
 * Not shared with any third parties
 * Permanently deleted when the plugin is uninstalled
@@ -204,14 +206,14 @@ This data is:
 
 For support, bug reports, or feature requests:
 
-* **GitHub Issues**: https://github.com/SaintHossam/wp-stock-notifications-pro/issues
+* **GitHub Issues**: https://github.com/SaintHossam/stock-notifications-pro/issues
 * **Author**: https://github.com/SaintHossam/
 
 == Developer Information ==
 
 This plugin follows WordPress and WooCommerce coding standards and uses a modern PSR-4 autoloading structure. Developers can extend the plugin using standard WordPress hooks and filters.
 
-For more information, visit: https://github.com/SaintHossam/wp-stock-notifications-pro
+For more information, visit: https://github.com/SaintHossam/stock-notifications-pro
 
 == Credits ==
 

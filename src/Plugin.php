@@ -1,171 +1,164 @@
 <?php
+
 /**
  * Main Plugin Class
  *
- * @package WPStockNotificationsPro
+ * @package StockNotificationsPro
  */
 
-namespace WPStockNotificationsPro;
+namespace StockNotificationsPro;
 
-use WPStockNotificationsPro\Admin\Menu;
-use WPStockNotificationsPro\Admin\Settings;
-use WPStockNotificationsPro\Public\Frontend;
-use WPStockNotificationsPro\Mail\Mailer;
+use StockNotificationsPro\Admin\Menu;
+use StockNotificationsPro\Admin\Settings;
+use StockNotificationsPro\Public\Frontend;
+use StockNotificationsPro\Mail\Mailer;
 
 /**
  * Class Plugin
  *
  * Main plugin bootstrap class that initializes and registers all components.
  */
-class Plugin {
-
+class Plugin
+{
     /**
-     * Plugin version
+     * Plugin version.
      *
      * @var string
      */
-    const VERSION = '1.0.0';
+    public const VERSION = '1.0.0';
 
     /**
-     * Plugin text domain
+     * Plugin text domain.
      *
      * @var string
      */
-    const TEXT_DOMAIN = 'stock-notifier';
+    public const TEXT_DOMAIN = 'stock-notifications-pro';
 
     /**
-     * Plugin instance
+     * Plugin instance.
      *
      * @var Plugin|null
      */
     private static $instance = null;
 
     /**
-     * Frontend instance
+     * Frontend instance.
      *
      * @var Frontend
      */
     private $frontend;
 
     /**
-     * Admin Menu instance
+     * Admin Menu instance.
      *
      * @var Menu
      */
     private $admin_menu;
 
     /**
-     * Settings instance
+     * Settings instance.
      *
      * @var Settings
      */
     private $settings;
 
     /**
-     * Mailer instance
+     * Mailer instance.
      *
      * @var Mailer
      */
     private $mailer;
 
     /**
-     * Get plugin instance (Singleton pattern)
+     * Get plugin instance (Singleton pattern).
      *
      * @return Plugin
      */
-    public static function get_instance() {
+    public static function get_instance()
+    {
         if (null === self::$instance) {
             self::$instance = new self();
         }
+
         return self::$instance;
     }
 
     /**
-     * Plugin constructor - private to enforce singleton
+     * Plugin constructor - private to enforce singleton.
      */
-    private function __construct() {
+    private function __construct()
+    {
         $this->init();
     }
 
     /**
-     * Initialize the plugin
+     * Initialize the plugin.
      *
      * @return void
      */
-    private function init() {
-        // Load text domain
-        add_action('plugins_loaded', array($this, 'load_textdomain'));
-
-        // Initialize components
-        $this->mailer = new Mailer();
-        $this->frontend = new Frontend();
-        $this->settings = new Settings();
+    private function init()
+    {
+        // Initialize components.
+        $this->mailer    = new Mailer();
+        $this->frontend  = new Frontend();
+        $this->settings  = new Settings();
         $this->admin_menu = new Menu();
 
-        // Register hooks
+        // Register hooks.
         $this->register_hooks();
 
-        // Check and create/update database table
-        add_action('init', array($this, 'check_database_table'));
+        // Check and create/update database table periodically.
+        add_action('init', array( $this, 'check_database_table' ));
     }
 
     /**
-     * Load plugin text domain for translations
+     * Register all plugin hooks.
      *
      * @return void
      */
-    public function load_textdomain() {
-        load_plugin_textdomain(
-            self::TEXT_DOMAIN,
-            false,
-            dirname(dirname(plugin_basename(__FILE__))) . '/languages'
-        );
-    }
-
-    /**
-     * Register all plugin hooks
-     *
-     * @return void
-     */
-    private function register_hooks() {
-        // Frontend hooks
+    private function register_hooks()
+    {
+        // Frontend hooks.
         $this->frontend->register_hooks();
 
-        // Admin hooks
+        // Admin hooks.
         $this->admin_menu->register_hooks();
         $this->settings->register_hooks();
 
-        // Mailer hooks
+        // Mailer hooks.
         $this->mailer->register_hooks();
     }
 
     /**
-     * Check and ensure database table exists
+     * Check and ensure database table exists.
      *
      * @return void
      */
-    public function check_database_table() {
-        if (!get_transient('snp_table_checked')) {
-            \WPStockNotificationsPro\Activator::activate();
+    public function check_database_table()
+    {
+        if (! get_transient('snp_table_checked')) {
+            \StockNotificationsPro\Activator::activate();
             set_transient('snp_table_checked', 1, 12 * HOUR_IN_SECONDS);
         }
     }
 
     /**
-     * Get plugin version
+     * Get plugin version.
      *
      * @return string
      */
-    public static function get_version() {
+    public static function get_version()
+    {
         return self::VERSION;
     }
 
     /**
-     * Get plugin text domain
+     * Get plugin text domain.
      *
      * @return string
      */
-    public static function get_text_domain() {
+    public static function get_text_domain()
+    {
         return self::TEXT_DOMAIN;
     }
 }

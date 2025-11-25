@@ -2,13 +2,13 @@
 /**
  * Plugin Activation Handler
  *
- * @package WPStockNotificationsPro
+ * @package StockNotificationsPro
  */
 
-namespace WPStockNotificationsPro;
+namespace StockNotificationsPro;
 
-use WPStockNotificationsPro\Database\Schema;
-use WPStockNotificationsPro\Helpers\Functions;
+use StockNotificationsPro\Database\Schema;
+use StockNotificationsPro\Helpers\Functions;
 
 /**
  * Class Activator

@@ -1,0 +1,277 @@
+/* ============
+   Stock Notifications Pro – Admin Styles
+   ============ */
+
+.snp-wrap {
+  direction: rtl;
+}
+
+/* ====== Cards & Layout ====== */
+
+.snp-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin: 24px 0;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+  border: 1px solid #e2e8f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.snp-card::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: -40%;
+  top: -120px;
+  width: 180%;
+  height: 180px;
+  background: radial-gradient(
+      circle at 10% 20%,
+      rgba(56, 189, 248, 0.16),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(129, 140, 248, 0.18),
+      transparent 55%
+    );
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.snp-card > * {
+  position: relative;
+}
+
+/* ====== Dashboard Stats ====== */
+
+.snp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 12px;
+}
+
+.snp-stat {
+  background: linear-gradient(135deg, #0f172a 0%, #020617 65%);
+  border-radius: 16px;
+  padding: 16px 18px;
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.45);
+}
+
+.snp-stat::before {
+  content: "";
+  position: absolute;
+  inset-inline-end: -40px;
+  top: -40px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(
+    circle,
+    rgba(248, 250, 252, 0.18),
+    transparent 70%
+  );
+  opacity: 0.8;
+}
+
+.snp-stat__label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.snp-stat__value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #f9fafb;
+  margin-bottom: 4px;
+}
+
+.snp-stat__hint {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* ====== Form Rows (Settings / Requests Filters) ====== */
+
+.snp-row {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 14px;
+  margin-bottom: 14px;
+  align-items: center;
+}
+
+.snp-label {
+  font-weight: 600;
+  font-size: 13px;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.snp-input,
+.snp-card input[type="text"],
+.snp-card input[type="email"],
+.snp-card input[type="number"],
+.snp-card input[type="password"],
+.snp-card select {
+  width: 100%;
+  padding: 9px 11px;
+  border-radius: 9px;
+  border: 1px solid #cbd5e1;
+  font-size: 13px;
+  color: #0f172a;
+  background-color: #f9fafb;
+  box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease,
+    background-color 0.18s ease, transform 0.08s ease;
+}
+
+.snp-input:focus,
+.snp-card input[type="text"]:focus,
+.snp-card input[type="email"]:focus,
+.snp-card input[type="number"]:focus,
+.snp-card input[type="password"]:focus,
+.snp-card select:focus {
+  outline: 0;
+  border-color: #0ea5e9;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Checkboxes & small controls */
+.snp-card input[type="checkbox"] {
+  accent-color: #0ea5e9;
+}
+
+/* ====== Buttons ====== */
+
+.snp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+  color: #ffffff;
+  border: 0;
+  padding: 9px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.28);
+  transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
+}
+
+.snp-btn::before {
+  content: "⚡";
+  font-size: 14px;
+}
+
+.snp-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px rgba(37, 99, 235, 0.35);
+  filter: brightness(1.04);
+}
+
+.snp-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.3);
+}
+
+/* Danger button (delete) */
+
+.snp-danger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  text-decoration: none;
+  border: 0;
+  box-shadow: 0 12px 24px rgba(239, 68, 68, 0.32);
+  transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
+}
+
+.snp-danger::before {
+  content: "🗑";
+  font-size: 13px;
+}
+
+.snp-danger:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px rgba(239, 68, 68, 0.38);
+  filter: brightness(1.05);
+}
+
+/* ====== Notes / Helpers ====== */
+
+.snp-note {
+  font-size: 11px;
+  color: #64748b;
+  display: inline-block;
+  margin-top: 3px;
+}
+
+/* ====== Table styling (Requests) ====== */
+
+.snp-wrap .wp-list-table {
+  border-radius: 10px;
+  overflow: hidden;
+  border-color: #e2e8f0;
+}
+
+.snp-wrap .wp-list-table thead tr {
+  background: #f1f5f9;
+}
+
+.snp-wrap .wp-list-table th {
+  font-weight: 600;
+  font-size: 12px;
+  color: #0f172a;
+}
+
+.snp-wrap .wp-list-table td,
+.snp-wrap .wp-list-table th {
+  text-align: right;
+  vertical-align: middle;
+}
+
+.snp-wrap .wp-list-table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.snp-wrap .wp-list-table tbody tr:hover td {
+  background-color: #eff6ff;
+}
+
+/* ====== Responsive ====== */
+
+@media (max-width: 960px) {
+  .snp-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .snp-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .snp-grid {
+    grid-template-columns: 1fr;
+  }
+}

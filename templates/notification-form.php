@@ -2,7 +2,7 @@
 /**
  * Notification Form Template
  *
- * @package WPStockNotificationsPro
+ * @package StockNotificationsPro
  * @global \WC_Product $product
  */
 

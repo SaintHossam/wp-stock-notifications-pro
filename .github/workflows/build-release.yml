@@ -3,66 +3,66 @@ name: Build Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
   workflow_dispatch:
 
 jobs:
   build:
     name: Build Release Artifact
     runs-on: ubuntu-latest
-    
+
     permissions:
-      contents: write  # Needed for creating releases and uploading assets
-      actions: read    # Needed for accessing workflow artifacts
-    
+      contents: write # Needed for creating releases and uploading assets
+      actions: read # Needed for accessing workflow artifacts
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: "7.4"
           tools: composer:v2
-      
+
       - name: Install dependencies
         run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
-      
+
       - name: Create release directory
         run: |
           mkdir -p release
-          rsync -av --exclude='.git' --exclude='.github' --exclude='release' --exclude='composer.lock' --exclude='.gitignore' ./ release/wp-stock-notifications-pro/
-      
+          rsync -av --exclude='.git' --exclude='.github' --exclude='release' --exclude='composer.lock' --exclude='.gitignore' ./ release/stock-notifications-pro/
+
       - name: Create release artifact
         run: |
           cd release
-          zip -r ../wp-stock-notifications-pro.zip wp-stock-notifications-pro/
+          zip -r ../stock-notifications-pro.zip stock-notifications-pro/
           cd ..
-      
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: wp-stock-notifications-pro
-          path: wp-stock-notifications-pro.zip
+          name: stock-notifications-pro
+          path: stock-notifications-pro.zip
           retention-days: 90
-      
+
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: wp-stock-notifications-pro.zip
+          files: stock-notifications-pro.zip
           body: |
             ## Stock Notifications Pro - Release ${{ github.ref_name }}
-            
+
             ### Installation
-            1. Download the `wp-stock-notifications-pro.zip` file below
+            1. Download the `stock-notifications-pro.zip` file below
             2. In WordPress admin, go to **Plugins → Add New → Upload Plugin**
             3. Upload the ZIP file and activate
-            
+
             ### What's Included
             - All plugin files with Composer autoloader pre-built
             - Ready to activate on any WordPress + WooCommerce site (PHP 7.4+)
-            
+
             ### For Developers
             If you want to contribute, clone the repository and run `composer install` to set up the development environment.
         env:

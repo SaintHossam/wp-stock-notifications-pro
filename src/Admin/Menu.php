@@ -1,101 +1,142 @@
 <?php
+
 /**
  * Admin Menu Handler
  *
- * @package WPStockNotificationsPro
+ * @package StockNotificationsPro
  */
 
-namespace WPStockNotificationsPro\Admin;
+namespace StockNotificationsPro\Admin;
 
-use WPStockNotificationsPro\Admin\Dashboard;
-use WPStockNotificationsPro\Admin\Settings;
-use WPStockNotificationsPro\Admin\Requests;
+use StockNotificationsPro\Admin\Dashboard;
+use StockNotificationsPro\Admin\Settings;
+use StockNotificationsPro\Admin\Requests;
 
 /**
  * Class Menu
  *
  * Handles admin menu registration and routing.
  */
-class Menu {
-
+class Menu
+{
     /**
-     * Dashboard instance
+     * Dashboard instance.
      *
      * @var Dashboard
      */
     private $dashboard;
 
     /**
-     * Requests instance
+     * Requests instance.
      *
      * @var Requests
      */
     private $requests;
 
     /**
-     * Settings instance
+     * Settings instance.
      *
      * @var Settings
      */
     private $settings;
 
     /**
-     * Constructor
+     * Constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->dashboard = new Dashboard();
-        $this->requests = new Requests();
-        $this->settings = new Settings();
+        $this->requests  = new Requests();
+        $this->settings  = new Settings();
     }
 
     /**
-     * Register hooks
+     * Register hooks.
      *
      * @return void
      */
-    public function register_hooks() {
-        add_action('admin_menu', array($this, 'register_menu'));
-        add_action('admin_init', array($this, 'handle_actions'));
+    public function register_hooks()
+    {
+        add_action('admin_menu', array( $this, 'register_menu' ));
+
+        // هنا مفيش تعامل مباشر مع $_GET/$_POST، بس بنوصل لـ handle_actions().
+        add_action('admin_init', array( $this, 'handle_actions' ));
+
+        add_action('admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ));
     }
 
     /**
-     * Register admin menu
+     * Register admin menu.
      *
      * @return void
      */
-    public function register_menu() {
+    public function register_menu()
+    {
         add_menu_page(
-            'إشعارات المخزون',
-            'إشعارات المخزون',
+            __('إشعارات المخزون', 'stock-notifications-pro'),
+            __('إشعارات المخزون', 'stock-notifications-pro'),
             'manage_woocommerce',
             'snp-stock',
-            array($this, 'render_page'),
+            array( $this, 'render_page' ),
             'dashicons-bell',
             56
         );
     }
 
     /**
-     * Render admin page
+     * Enqueue admin styles for this plugin page only.
+     *
+     * @param string $hook_suffix Current admin page hook suffix.
+     * @return void
+     */
+    public function enqueue_admin_assets($hook_suffix)
+    {
+        if ('toplevel_page_snp-stock' !== $hook_suffix) {
+            return;
+        }
+
+        wp_enqueue_style(
+            'stock-notifications-pro-admin',
+            stock_notifications_PRO_PLUGIN_URL . 'assets/css/admin.css',
+            array(),
+            defined('stock_notifications_PRO_VERSION') ? stock_notifications_PRO_VERSION : '1.0.0'
+        );
+    }
+
+    /**
+     * Render admin page.
      *
      * @return void
      */
-    public function render_page() {
-        $tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'dashboard';
+    public function render_page()
+    {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Tab selection is read-only context.
+        $tab = isset($_GET['tab']) ? sanitize_key(wp_unslash($_GET['tab'])) : 'dashboard';
 
-        echo '<div class="wrap snp-wrap"><h1>إشعارات المخزون</h1>';
+        echo '<div class="wrap snp-wrap"><h1>' . esc_html__('إشعارات المخزون', 'stock-notifications-pro') . '</h1>';
 
+        // Show delete notice if present (value already sanitized as int).
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Notice is based on a prior action that should already be nonce-verified.
         if (isset($_GET['deleted'])) {
-            echo '<div class="notice notice-success"><p>تم حذف ' . intval($_GET['deleted']) . ' طلب.</p></div>';
+            $deleted = absint(wp_unslash($_GET['deleted']));
+
+            if ($deleted) {
+                echo '<div class="notice notice-success"><p>';
+                echo esc_html(
+                    sprintf(
+                        /* translators: %d: number of deleted requests */
+                        __('تم حذف %d طلب.', 'stock-notifications-pro'),
+                        $deleted
+                    )
+                );
+                echo '</p></div>';
+            }
         }
 
-        // Render tabs
+        // Render tabs.
         $this->render_tabs($tab);
 
-        // Add admin styles
-        $this->add_admin_styles();
-
-        // Render tab content
+        // Render tab content.
         switch ($tab) {
             case 'settings':
                 $this->settings->render();
@@ -115,62 +156,46 @@ class Menu {
     }
 
     /**
-     * Render navigation tabs
+     * Render navigation tabs.
      *
      * @param string $current_tab Current active tab.
      * @return void
      */
-    private function render_tabs($current_tab) {
+    private function render_tabs($current_tab)
+    {
         echo '<h2 class="nav-tab-wrapper">';
-        
+
         $tabs = array(
-            'dashboard' => 'لوحة التحكم',
-            'requests' => 'الطلبات',
-            'settings' => 'الإعدادات',
-            'test' => 'اختبار البريد',
+            'dashboard' => __('لوحة التحكم', 'stock-notifications-pro'),
+            'requests'  => __('الطلبات', 'stock-notifications-pro'),
+            'settings'  => __('الإعدادات', 'stock-notifications-pro'),
+            'test'      => __('اختبار البريد', 'stock-notifications-pro'),
         );
 
         foreach ($tabs as $tab => $label) {
-            $url = admin_url('admin.php?page=snp-stock&tab=' . $tab);
+            $url    = admin_url('admin.php?page=snp-stock&tab=' . $tab);
             $active = ($current_tab === $tab) ? 'nav-tab-active' : '';
-            echo sprintf(
-                '<a href="%s" class="nav-tab %s">%s</a>',
+
+            printf(
+                '<a href="%1$s" class="nav-tab %2$s">%3$s</a>',
                 esc_url($url),
-                $active,
+                esc_attr($active),
                 esc_html($label)
             );
         }
-        
+
         echo '</h2>';
     }
 
     /**
-     * Add admin styles
+     * Handle admin actions.
      *
      * @return void
      */
-    private function add_admin_styles() {
-        echo '<style>
-        .snp-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin:20px 0;box-shadow:0 2px 12px rgba(0,0,0,.04)}
-        .snp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-        .snp-stat{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;text-align:center}
-        .snp-input{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px}
-        .snp-label{font-weight:600;margin-bottom:6px;display:block}
-        .snp-btn{background:#0b74de;color:#fff;border:0;padding:10px 16px;border-radius:8px;cursor:pointer;font-weight:600}
-        .snp-row{display:grid;grid-template-columns:1fr 2fr;gap:12px;margin-bottom:12px}
-        table.widefat td,table.widefat th{text-align:right}
-        .snp-note{font-size:12px;color:#64748b}
-        .snp-danger{background:#ef4444;color:#fff;border:0;padding:6px 10px;border-radius:6px}
-        </style>';
-    }
-
-    /**
-     * Handle admin actions
-     *
-     * @return void
-     */
-    public function handle_actions() {
-        if (!current_user_can('manage_woocommerce')) {
+    public function handle_actions()
+    {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonces are verified inside Requests::handle_delete_action() and Requests::handle_bulk_delete().
+        if (! current_user_can('manage_woocommerce')) {
             return;
         }
 

@@ -1,43 +1,46 @@
 <?php
+
 /**
  * Uninstall Script
  *
  * Fired when the plugin is uninstalled.
  *
- * @package WPStockNotificationsPro
+ * @package StockNotificationsPro
  */
 
-// If uninstall not called from WordPress, exit
-if (!defined('WP_UNINSTALL_PLUGIN')) {
+if (! defined('WP_UNINSTALL_PLUGIN')) {
     exit;
 }
 
-// Delete plugin options
+// Delete plugin options.
 delete_option('snp_options');
 
-// Delete transients
+// Delete transients.
 delete_transient('snp_table_checked');
 
-// Drop database table
+// Drop database table.
 global $wpdb;
-$table_name = $wpdb->prefix . 'stock_notifications';
 
-// Try to use the Schema class if autoloader is available, otherwise use direct SQL
+// Prefixed global var name for table.
+$stock_notifications_pro_table_name = $wpdb->prefix . 'stock_notifications';
+
+// If autoloader available, try to use Schema::drop_table().
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
-    
-    if (class_exists('WPStockNotificationsPro\Database\Schema')) {
-        WPStockNotificationsPro\Database\Schema::drop_table();
+
+    if (class_exists('StockNotificationsPro\Database\Schema')) {
+        \StockNotificationsPro\Database\Schema::drop_table();
     } else {
-        // Fallback to direct SQL if class cannot be loaded
-        // Table name is safe as it's constructed from trusted $wpdb->prefix and hardcoded string
-        $wpdb->query("DROP TABLE IF EXISTS `{$table_name}`");
+        // Table name مبني من $wpdb->prefix فقط (بدون user input)،
+        // فنستخدم PHPCS ignore عشان نوع التحليل الآلي هنا مش فاهم الحالة دي.
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.SchemaChange,PluginCheck.Security.DirectDB.UnescapedDBParameter,WordPress.DB.PreparedSQL.NotPrepared
+        $wpdb->query('DROP TABLE IF EXISTS `' . $stock_notifications_pro_table_name . '`');
     }
 } else {
-    // Fallback to direct SQL when autoloader is not available
-    // Table name is safe as it's constructed from trusted $wpdb->prefix and hardcoded string
-    $wpdb->query("DROP TABLE IF EXISTS `{$table_name}`");
+    // Fallback: direct drop by name.
+    // برضه اسم الجدول آمن، فبنضيف NotPrepared للـ ignore.
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.SchemaChange,PluginCheck.Security.DirectDB.UnescapedDBParameter,WordPress.DB.PreparedSQL.NotPrepared
+    $wpdb->query('DROP TABLE IF EXISTS `' . $stock_notifications_pro_table_name . '`');
 }
 
-// Delete any post meta if stored
-// (Currently not used, but available for future use)
+// Extra cleanup (if needed in future) can be added here.

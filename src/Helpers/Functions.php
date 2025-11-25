@@ -1,29 +1,36 @@
 <?php
+
 /**
  * Helper Functions
  *
- * @package WPStockNotificationsPro
+ * @package StockNotificationsPro
  */
 
-namespace WPStockNotificationsPro\Helpers;
+namespace StockNotificationsPro\Helpers;
 
-use WPStockNotificationsPro\Database\Schema;
+use StockNotificationsPro\Database\Schema;
 
 /**
  * Class Functions
  *
  * Provides helper functions for the plugin.
  */
-class Functions {
-
+class Functions
+{
     /**
-     * Get default plugin options
+     * Get default plugin options.
      *
      * @return array
      */
-    public static function get_defaults() {
-        $domain = parse_url(home_url(), PHP_URL_HOST);
-        
+    public static function get_defaults()
+    {
+        $domain      = '';
+        $parsed_url  = wp_parse_url(home_url());
+
+        if (! empty($parsed_url['host'])) {
+            $domain = $parsed_url['host'];
+        }
+
         return array(
             'enable_smtp'      => 0,
             'smtp_host'        => '',
@@ -31,7 +38,7 @@ class Functions {
             'smtp_user'        => '',
             'smtp_pass'        => '',
             'smtp_secure'      => 'tls',
-            'from_email'       => 'no-reply@' . $domain,
+            'from_email'       => $domain ? 'no-reply@' . $domain : '',
             'from_name'        => get_bloginfo('name'),
             'reply_to'         => get_option('admin_email'),
             'list_unsub'       => 1,
@@ -45,36 +52,40 @@ class Functions {
     }
 
     /**
-     * Get plugin option(s)
+     * Get plugin option(s).
      *
      * @param string|null $key Optional. Specific option key to retrieve.
      * @return mixed
      */
-    public static function get_option($key = null) {
+    public static function get_option($key = null)
+    {
         $options = get_option('snp_options', array());
         $options = wp_parse_args($options, self::get_defaults());
-        
-        return $key ? ($options[$key] ?? null) : $options;
+
+        return $key ? ($options[ $key ] ?? null) : $options;
     }
 
     /**
-     * Update plugin options
+     * Update plugin options.
      *
      * @param array $data New options data.
      * @return bool
      */
-    public static function update_option($data) {
+    public static function update_option($data)
+    {
         $current = self::get_option();
-        $new = wp_parse_args($data, $current);
+        $new     = wp_parse_args($data, $current);
+
         return update_option('snp_options', $new);
     }
 
     /**
-     * Get the table name
+     * Get the table name.
      *
      * @return string
      */
-    public static function get_table_name() {
+    public static function get_table_name()
+    {
         return Schema::get_table_name();
     }
 }

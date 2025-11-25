@@ -1,38 +1,42 @@
 <?php
+
 /**
  * Database Schema Handler
  *
- * @package WPStockNotificationsPro
+ * @package StockNotificationsPro
  */
 
-namespace WPStockNotificationsPro\Database;
+namespace StockNotificationsPro\Database;
 
 /**
  * Class Schema
  *
  * Handles database table creation and management.
  */
-class Schema {
-
+class Schema
+{
     /**
-     * Get the table name with WordPress prefix
+     * Get the table name with WordPress prefix.
      *
      * @return string
      */
-    public static function get_table_name() {
+    public static function get_table_name()
+    {
         global $wpdb;
+
         return $wpdb->prefix . 'stock_notifications';
     }
 
     /**
-     * Create the database table
+     * Create the database table.
      *
      * @return void
      */
-    public static function create_table() {
+    public static function create_table()
+    {
         global $wpdb;
-        
-        $table_name = self::get_table_name();
+
+        $table_name      = self::get_table_name();
         $charset_collate = $wpdb->get_charset_collate();
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -52,17 +56,24 @@ class Schema {
             KEY user_email (user_email)
         ) {$charset_collate};";
 
+        // dbDelta is the recommended way to handle schema changes in WordPress.
         dbDelta($sql);
     }
 
     /**
-     * Drop the database table
+     * Drop the database table.
      *
      * @return void
      */
-    public static function drop_table() {
+    public static function drop_table()
+    {
         global $wpdb;
-        $table_name = self::get_table_name();
-        $wpdb->query("DROP TABLE IF EXISTS {$table_name}");
+
+        $table_name = esc_sql(self::get_table_name());
+
+        // Table name is constructed from the trusted $wpdb->prefix and a hardcoded string.
+        // This direct query is acceptable here as part of uninstall/schema management.
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter
+        $wpdb->query("DROP TABLE IF EXISTS `{$table_name}`");
     }
 }

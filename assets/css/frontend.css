@@ -1,0 +1,534 @@
+/*
+ * Frontend styles for Stock Notifications Pro
+ * Author: Hossam Hamdy (SaintHossam)
+ */
+
+/* ========== Variables ========== */
+
+:root {
+  --snp-main: #0b74de;
+  --snp-main-soft: #1d9cf2;
+  --snp-main-dark: #0f4c81;
+  --snp-accent: #f97316;
+  --snp-danger: #ef4444;
+  --snp-success: #22c55e;
+  --snp-bg-soft: #0f172a;
+  --snp-border: rgba(148, 163, 184, 0.45);
+  --snp-radius-lg: 18px;
+  --snp-radius-md: 12px;
+  --snp-radius-sm: 8px;
+  --snp-shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.25);
+  --snp-transition-fast: 0.18s ease-out;
+  --snp-transition: 0.25s ease;
+  --snp-transition-slow: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+  --snp-form-bg: radial-gradient(
+      circle at top right,
+      rgba(56, 189, 248, 0.16),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(96, 165, 250, 0.18),
+      transparent 55%
+    ),
+    #020617;
+}
+
+/* ========== Keyframes ========== */
+
+@keyframes snp-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    filter: blur(1px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes snp-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
+  }
+}
+
+@keyframes snp-bell-ring {
+  0% {
+    transform: translateX(0) rotate(0);
+  }
+  15% {
+    transform: translateX(-1px) rotate(-9deg);
+  }
+  30% {
+    transform: translateX(1px) rotate(8deg);
+  }
+  45% {
+    transform: translateX(-1px) rotate(-6deg);
+  }
+  60% {
+    transform: translateX(1px) rotate(4deg);
+  }
+  75% {
+    transform: translateX(0) rotate(-2deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+}
+
+@keyframes snp-badge-pop {
+  0% {
+    transform: translateY(-8px) scale(0.7);
+    opacity: 0;
+  }
+  70% {
+    transform: translateY(0) scale(1.04);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes snp-toast-slide {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ========== Notification Form ========== */
+
+.snp-form {
+  position: relative;
+  direction: rtl;
+  background: var(--snp-form-bg);
+  border-radius: var(--snp-radius-lg);
+  padding: 22px 22px 20px;
+  margin: 22px 0;
+  max-width: 440px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: var(--snp-shadow-soft);
+  overflow: hidden;
+  color: #e5e7eb;
+  isolation: isolate;
+  animation: snp-fade-up 0.45s var(--snp-transition-slow);
+}
+
+/* subtle gradient border glow */
+.snp-form::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 220deg,
+    rgba(59, 130, 246, 0.8),
+    rgba(56, 189, 248, 0.6),
+    rgba(37, 99, 235, 0.9),
+    rgba(59, 130, 246, 0.8)
+  );
+  opacity: 0;
+  z-index: -1;
+  transition: opacity var(--snp-transition-slow);
+}
+
+/* decorative blur circle */
+.snp-form::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(59, 130, 246, 0.45),
+    transparent 60%
+  );
+  top: -60px;
+  left: -70px;
+  opacity: 0.3;
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.snp-form:hover::before {
+  opacity: 0.9;
+}
+
+/* Gradient overlay to simulate border only */
+.snp-form > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Form heading */
+.snp-form h4 {
+  margin: 0 0 14px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #f9fafb;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.snp-form h4::before {
+  content: "🔔";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 10%, #facc15, #f97316 60%, #ea580c);
+  box-shadow: 0 0 0 0 rgba(248, 250, 252, 0.3);
+  animation: snp-bell-ring 1.1s ease-in-out 0.3s 1;
+  font-size: 15px;
+}
+
+/* Fields layout */
+.snp-form p,
+.snp-form .snp-field {
+  margin: 0 0 12px;
+}
+
+.snp-form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #cbd5f5;
+  margin-bottom: 4px;
+}
+
+/* Inputs */
+.snp-form input[type="text"],
+.snp-form input[type="email"],
+.snp-form input[type="tel"] {
+  width: 100%;
+  padding: 10px 11px;
+  border-radius: var(--snp-radius-sm);
+  border: 1px solid rgba(148, 163, 184, 0.75);
+  background: rgba(15, 23, 42, 0.85);
+  color: #e5e7eb;
+  font-size: 14px;
+  line-height: 1.4;
+  box-sizing: border-box;
+  transition: border-color var(--snp-transition-fast),
+    box-shadow var(--snp-transition-fast), transform var(--snp-transition-fast),
+    background-color var(--snp-transition-fast);
+}
+
+.snp-form input[type="text"]::placeholder,
+.snp-form input[type="email"]::placeholder,
+.snp-form input[type="tel"]::placeholder {
+  color: rgba(148, 163, 184, 0.95);
+  font-size: 13px;
+}
+
+.snp-form input[type="text"]:focus,
+.snp-form input[type="email"]:focus,
+.snp-form input[type="tel"]:focus {
+  outline: none;
+  border-color: rgba(56, 189, 248, 0.95);
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.75);
+  background: rgba(15, 23, 42, 0.98);
+  transform: translateY(-1px);
+}
+
+/* Submit button */
+.snp-form button[type="submit"],
+.snp-form button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 11px 20px;
+  margin-top: 2px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #f9fafb;
+  background-image: linear-gradient(135deg, #2563eb, #22c55e, #0ea5e9);
+  background-size: 200% 200%;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.35);
+  transition: background-position var(--snp-transition-slow),
+    transform var(--snp-transition-slow), box-shadow var(--snp-transition-slow),
+    filter var(--snp-transition-fast);
+}
+
+.snp-form button[type="submit"]::before,
+.snp-form button::before {
+  content: "📩";
+  margin-left: 6px;
+  font-size: 15px;
+  transform-origin: center;
+  transition: transform var(--snp-transition-fast);
+}
+
+.snp-form button[type="submit"]:hover,
+.snp-form button:hover {
+  background-position: 100% 0%;
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 18px 40px rgba(15, 118, 110, 0.45);
+  filter: brightness(1.03);
+}
+
+.snp-form button[type="submit"]:hover::before,
+.snp-form button:hover::before {
+  transform: translateX(-1px) translateY(-1px);
+}
+
+.snp-form button[type="submit"]:active,
+.snp-form button:active {
+  transform: translateY(0) scale(0.99);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.6);
+}
+
+.snp-form button[type="submit"]:disabled,
+.snp-form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+  box-shadow: none;
+  background-image: linear-gradient(135deg, #64748b, #475569);
+}
+
+/* ========== Messages (Success / Error) ========== */
+
+#snp-msg {
+  margin-top: 10px;
+}
+
+.snp-ok,
+.snp-err {
+  border-radius: var(--snp-radius-md);
+  padding: 10px 11px;
+  font-size: 13px;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  animation: snp-toast-slide 0.25s var(--snp-transition-fast);
+}
+
+.snp-ok::before,
+.snp-err::before {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  margin-top: 1px;
+}
+
+/* success */
+.snp-ok {
+  background: linear-gradient(
+    135deg,
+    rgba(22, 163, 74, 0.16),
+    rgba(21, 128, 61, 0.03)
+  );
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #bbf7d0;
+}
+
+.snp-ok::before {
+  content: "✔";
+  background: radial-gradient(circle, #22c55e, #15803d);
+  color: #f0fdf4;
+}
+
+/* error */
+.snp-err {
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.16),
+    rgba(127, 29, 29, 0.03)
+  );
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  color: #fecaca;
+}
+
+.snp-err::before {
+  content: "!";
+  background: radial-gradient(circle, #ef4444, #b91c1c);
+  color: #fef2f2;
+}
+
+/* ========== Loop Button (Notify instead of Add to Cart) ========== */
+
+.snp-notify-btn {
+  position: relative;
+  overflow: hidden;
+  border-radius: 999px !important;
+  border: none !important;
+  padding: 9px 16px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.02em;
+  background-image: linear-gradient(
+    135deg,
+    #f97316,
+    #fb923c,
+    #facc15
+  ) !important;
+  background-size: 180% 180% !important;
+  color: #111827 !important;
+  box-shadow: 0 10px 22px rgba(234, 88, 12, 0.35) !important;
+  transition: background-position var(--snp-transition-slow),
+    transform var(--snp-transition-slow), box-shadow var(--snp-transition-slow),
+    color var(--snp-transition-fast);
+}
+
+.snp-notify-btn::before {
+  content: "🔔";
+  margin-left: 6px;
+  font-size: 14px;
+  display: inline-block;
+  transform-origin: 50% 20%;
+  transition: transform 0.18s ease-out;
+}
+
+.snp-notify-btn::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: -20%;
+  top: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.55) 45%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.snp-notify-btn:hover {
+  background-position: 100% 0 !important;
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 14px 28px rgba(194, 65, 12, 0.5) !important;
+}
+
+.snp-notify-btn:hover::before {
+  animation: snp-bell-ring 0.65s ease-in-out;
+}
+
+.snp-notify-btn:hover::after {
+  opacity: 1;
+  transform: translateX(200%);
+  transition: transform 0.55s ease-out, opacity 0.55s ease-out;
+}
+
+.snp-notify-btn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 5px 12px rgba(15, 23, 42, 0.35) !important;
+}
+
+/* ========== Badges & Out-of-stock Product ========== */
+
+.snp-oos {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: radial-gradient(circle at 0 0, #fecaca, #b91c1c);
+  color: #fef2f2;
+  margin: 6px 0 4px;
+  box-shadow: 0 10px 18px rgba(185, 28, 28, 0.45);
+  animation: snp-badge-pop 0.35s ease-out;
+}
+
+.snp-oos::before {
+  content: "⛔";
+  font-size: 12px;
+}
+
+/* Product wrapper with class snp-is-oos (added via post_class filter) */
+.snp-is-oos {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Red overlay label */
+.snp-is-oos::after {
+  content: "نفدت الكمية";
+  position: absolute;
+  top: 10px;
+  inset-inline-end: 10px;
+  padding: 4px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: #fef2f2;
+  box-shadow: 0 10px 18px rgba(127, 29, 29, 0.55);
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  animation: snp-badge-pop 0.35s ease-out;
+  z-index: 2;
+}
+
+/* Image styling */
+.snp-is-oos img {
+  filter: grayscale(40%);
+  opacity: 0.75;
+  transform-origin: center;
+  transition: filter var(--snp-transition), opacity var(--snp-transition),
+    transform var(--snp-transition);
+}
+
+.snp-is-oos:hover img {
+  filter: grayscale(65%);
+  opacity: 0.68;
+  transform: scale(1.03);
+}
+
+/* ========== Responsive ========== */
+
+@media (max-width: 768px) {
+  .snp-form {
+    margin: 16px 0;
+    padding: 16px 16px 14px;
+    max-width: 100%;
+    border-radius: 16px;
+  }
+
+  .snp-form h4 {
+    font-size: 16px;
+  }
+
+  .snp-form button[type="submit"],
+  .snp-form button {
+    font-size: 14px;
+  }
+
+  .snp-oos {
+    font-size: 11px;
+  }
+}

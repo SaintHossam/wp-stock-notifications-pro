@@ -2,10 +2,10 @@
 /**
  * Plugin Deactivation Handler
  *
- * @package WPStockNotificationsPro
+ * @package StockNotificationsPro
  */
 
-namespace WPStockNotificationsPro;
+namespace StockNotificationsPro;
 
 /**
  * Class Deactivator

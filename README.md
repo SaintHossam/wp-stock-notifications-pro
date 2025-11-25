@@ -2,10 +2,10 @@
 
 Back-in-stock alerts for WooCommerce. Let shoppers subscribe to out-of-stock products and automatically email them when items are restocked. Includes a clean admin settings panel and SMTP configuration for reliable delivery.
 
-- **Author:** Hossam Hamdy (SaintHossam)  
-- **Plugin URI:** https://github.com/SaintHossam/wp-stock-notifications-pro  
-- **Author URI:** https://github.com/SaintHossam/  
-- **Text Domain:** `wp-stock-notifications-pro`
+- **Author:** Hossam Hamdy (SaintHossam)
+- **Plugin URI:** https://github.com/SaintHossam/stock-notifications-pro
+- **Author URI:** https://github.com/SaintHossam/
+- **Text Domain:** `stock-notifications-pro`
 - **Version:** 1.0.0
 - **License:** GPL-2.0-or-later
 
@@ -19,7 +19,7 @@ The plugin has been completely refactored into a modern, maintainable structure 
 
 ### What's New
 
-- ✅ **PSR-4 Autoloading**: All classes organized under `WPStockNotificationsPro` namespace
+- ✅ **PSR-4 Autoloading**: All classes organized under `StockNotificationsPro` namespace
 - ✅ **Modular Architecture**: Clean separation of concerns (Admin, Public, Mail, Database, Helpers)
 - ✅ **Composer Integration**: Professional dependency management
 - ✅ **Template System**: Email and form templates in dedicated directories
@@ -52,8 +52,8 @@ The plugin has been completely refactored into a modern, maintainable structure 
 
 **⚠️ Important:** Do not download the repository source ZIP directly. Use the pre-built release instead.
 
-1. Go to the [Releases page](https://github.com/SaintHossam/wp-stock-notifications-pro/releases)
-2. Download the latest `wp-stock-notifications-pro.zip` file from the release assets
+1. Go to the [Releases page](https://github.com/SaintHossam/stock-notifications-pro/releases)
+2. Download the latest `stock-notifications-pro.zip` file from the release assets
 3. In **WordPress Admin → Plugins → Add New → Upload Plugin**
 4. Upload the downloaded ZIP file
 5. Click **Activate Plugin**
@@ -67,8 +67,8 @@ If you want to contribute or modify the plugin:
 
 ```bash
 # Clone the repository
-git clone https://github.com/SaintHossam/wp-stock-notifications-pro.git
-cd wp-stock-notifications-pro
+git clone https://github.com/SaintHossam/stock-notifications-pro.git
+cd stock-notifications-pro
 
 # Install dependencies (includes dev dependencies for testing)
 composer install
@@ -80,6 +80,7 @@ composer install --no-dev
 Then activate the plugin through WordPress admin panel.
 
 **Building a Release:**
+
 - The GitHub Actions workflow automatically builds release artifacts when you push a tag (e.g., `v1.0.1`)
 - You can also manually trigger the workflow from the Actions tab
 - The workflow creates a ZIP file with `vendor/` directory included
@@ -89,7 +90,7 @@ Then activate the plugin through WordPress admin panel.
 ## Directory Structure
 
 ```
-wp-stock-notifications-pro/
+stock-notifications-pro/
 ├── src/                          # PSR-4 namespaced source code
 │   ├── Admin/                    # Admin-related classes
 │   │   ├── Dashboard.php         # Dashboard display
@@ -119,7 +120,7 @@ wp-stock-notifications-pro/
 ├── vendor/                        # Composer dependencies (git-ignored)
 ├── composer.json                  # Composer configuration
 ├── uninstall.php                  # Uninstall cleanup script
-├── wp-stock-notifications-pro.php # Main plugin file (bootstrap)
+├── stock-notifications-pro.php # Main plugin file (bootstrap)
 ├── .gitignore                     # Git ignore rules
 └── README.md                      # This file
 ```
@@ -130,10 +131,10 @@ wp-stock-notifications-pro/
 
 ### Namespace Structure
 
-All classes use the `WPStockNotificationsPro` namespace following PSR-4:
+All classes use the `StockNotificationsPro` namespace following PSR-4:
 
 ```php
-WPStockNotificationsPro\
+StockNotificationsPro\
 ├── Plugin                        # Singleton main class
 ├── Activator                     # Activation logic
 ├── Deactivator                   # Deactivation logic
@@ -155,6 +156,7 @@ WPStockNotificationsPro\
 ### Key Classes
 
 #### Plugin (Main Bootstrap)
+
 - **Location**: `src/Plugin.php`
 - **Purpose**: Singleton class that initializes all components
 - **Key Methods**:
@@ -163,16 +165,19 @@ WPStockNotificationsPro\
   - `load_textdomain()`: Loads translations
 
 #### Activator
+
 - **Location**: `src/Activator.php`
 - **Purpose**: Handles plugin activation tasks
 - Creates database table and sets default options
 
 #### Deactivator
+
 - **Location**: `src/Deactivator.php`
 - **Purpose**: Handles plugin deactivation cleanup
 - Cleans up transients (data preserved for reactivation)
 
 #### Frontend (Public)
+
 - **Location**: `src/Public/Frontend.php`
 - **Purpose**: Manages all public-facing functionality
 - **Responsibilities**:
@@ -183,6 +188,7 @@ WPStockNotificationsPro\
   - Manages unsubscribe requests
 
 #### Mailer
+
 - **Location**: `src/Mail/Mailer.php`
 - **Purpose**: Handles all email-related functionality
 - **Responsibilities**:
@@ -195,22 +201,26 @@ WPStockNotificationsPro\
 #### Admin Classes
 
 **Menu** (`src/Admin/Menu.php`)
+
 - Registers admin menu and routes tab requests
 - Handles admin page rendering
 - Coordinates between Dashboard, Requests, and Settings
 
 **Dashboard** (`src/Admin/Dashboard.php`)
+
 - Displays statistics (total, pending, sent)
 - Shows recent pending and sent notifications
 - Provides quick access to manage requests
 
 **Requests** (`src/Admin/Requests.php`)
+
 - Lists all subscription requests
 - Provides filtering (status, search)
 - Handles single and bulk deletion
 - Manages request lifecycle
 
 **Settings** (`src/Admin/Settings.php`)
+
 - Manages plugin configuration
 - Handles SMTP settings
 - Email template configuration
@@ -218,10 +228,10 @@ WPStockNotificationsPro\
 
 ### Database Schema
 
-The plugin creates a custom table `wp_stock_notifications`:
+The plugin creates a custom table `stock_notifications`:
 
 ```sql
-CREATE TABLE wp_stock_notifications (
+CREATE TABLE stock_notifications (
     id mediumint(9) NOT NULL AUTO_INCREMENT,
     product_id bigint(20) NOT NULL,
     variation_id bigint(20) DEFAULT 0,
@@ -242,11 +252,13 @@ CREATE TABLE wp_stock_notifications (
 ## Quick Setup
 
 1. **SMTP Configuration**:
+
    - Navigate to **إشعارات المخزون → الإعدادات**
    - Enable SMTP and enter your mail server details
    - Or use an SMTP plugin like WP Mail SMTP
 
 2. **Customize Messages**:
+
    - Configure email subject template (use `%site%` and `%product%` placeholders)
    - Set success/error messages for subscription form
    - Customize button text and notification preferences
@@ -320,7 +332,7 @@ add_action('snp_notification_sent', function($product_id, $subscriber) {
 
 Email templates are located in `templates/emails/`. To override:
 
-1. Copy the template to your theme: `your-theme/wp-stock-notifications-pro/emails/notification.php`
+1. Copy the template to your theme: `your-theme/stock-notifications-pro/emails/notification.php`
 2. Modify as needed
 3. Template variables: `$subscriber`, `$product`, `$site_name`
 
@@ -336,15 +348,20 @@ The modular structure makes it easy to add new features:
 
 ```php
 /**
- * Plugin Name: Stock Notifications Pro
+* Plugin Name: Stock Notifications Pro
+ * Plugin URI: https://github.com/SaintHossam/stock-notifications-pro
  * Description: Back-in-stock alerts for WooCommerce with admin settings and SMTP delivery.
  * Version: 1.0.0
  * Author: Hossam Hamdy (SaintHossam)
- * Text Domain: stock-notifier
+ * Author URI: https://github.com/SaintHossam/
+ * Text Domain: stock-notifications-pro
  * Domain Path: /languages
  * Requires at least: 5.8
+ * Tested up to: 6.8
  * Requires PHP: 7.4
  * WC requires at least: 5.0
+ * License: GPL-2.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  */
 ```
 
@@ -387,7 +404,8 @@ apply_filters('snp_email_headers', $headers, $product, $subscriber);
 ### Activation
 
 When the plugin is activated:
-- Creates custom database table (`wp_stock_notifications`)
+
+- Creates custom database table (`stock_notifications`)
 - Sets default plugin options (SMTP settings, email templates, messages)
 - Clears any existing transients
 - No data loss occurs on reactivation
@@ -395,6 +413,7 @@ When the plugin is activated:
 ### Deactivation
 
 When the plugin is deactivated:
+
 - Clears temporary data (transients only)
 - **Preserves** all subscription data and settings
 - Data remains intact for potential reactivation
@@ -403,7 +422,8 @@ When the plugin is deactivated:
 ### Uninstallation (Complete Removal)
 
 When the plugin is **deleted** from WordPress admin:
-- Permanently removes custom database table (`wp_stock_notifications`)
+
+- Permanently removes custom database table (`stock_notifications`)
 - Deletes all plugin settings (`snp_options`)
 - Removes all subscription requests
 - Clears all transients
@@ -416,6 +436,7 @@ When the plugin is **deleted** from WordPress admin:
 ## Privacy & GDPR
 
 This plugin stores the following user data:
+
 - Email address (required for notifications)
 - Name (required for personalization)
 - Phone number (optional)
@@ -464,8 +485,9 @@ Data is used solely for sending one-time back-in-stock notifications. Users can 
 ### Version 1.0.0 (2025-11-20)
 
 **Major Refactoring**
+
 - Complete restructure to PSR-4 compliant architecture
-- Introduced namespace `WPStockNotificationsPro`
+- Introduced namespace `StockNotificationsPro`
 - Separated concerns into modular classes
 - Added Composer for dependency management
 - Extracted templates into dedicated directory
@@ -474,6 +496,7 @@ Data is used solely for sending one-time back-in-stock notifications. Users can 
 - Maintained 100% backward compatibility
 
 **New Structure:**
+
 - `src/Plugin.php`: Main bootstrap class
 - `src/Admin/`: Admin functionality (Menu, Dashboard, Requests, Settings)
 - `src/Public/`: Public-facing functionality
@@ -496,6 +519,7 @@ Issues and Pull Requests are welcome!
 5. Open a Pull Request
 
 Please ensure:
+
 - Code follows WordPress Coding Standards
 - All classes are properly documented
 - Changes are backward compatible
@@ -511,13 +535,13 @@ composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
 # Create release structure
 mkdir -p release
-rsync -av --exclude='.git' --exclude='.github' --exclude='release' --exclude='composer.lock' --exclude='.gitignore' ./ release/wp-stock-notifications-pro/
+rsync -av --exclude='.git' --exclude='.github' --exclude='release' --exclude='composer.lock' --exclude='.gitignore' ./ release/stock-notifications-pro/
 
 # Create ZIP
-cd release && zip -r ../wp-stock-notifications-pro.zip wp-stock-notifications-pro/
+cd release && zip -r ../stock-notifications-pro.zip stock-notifications-pro/
 
 # Verify the ZIP contains vendor/autoload.php
-unzip -l ../wp-stock-notifications-pro.zip | grep "vendor/autoload.php"
+unzip -l ../stock-notifications-pro.zip | grep "vendor/autoload.php"
 ```
 
 ---
@@ -527,6 +551,7 @@ unzip -l ../wp-stock-notifications-pro.zip | grep "vendor/autoload.php"
 After installing or updating:
 
 1. **Test Subscription Form**:
+
    - Mark a product as out of stock
    - Visit the product page
    - Verify notification form appears
@@ -534,6 +559,7 @@ After installing or updating:
    - Check confirmation message
 
 2. **Test Email Notification**:
+
    - Update product to "In Stock"
    - Wait for notification email
    - Verify email content and formatting
@@ -551,7 +577,8 @@ After installing or updating:
 ## Support
 
 For issues, questions, or feature requests:
-- **GitHub Issues**: https://github.com/SaintHossam/wp-stock-notifications-pro/issues
+
+- **GitHub Issues**: https://github.com/SaintHossam/stock-notifications-pro/issues
 - **Author**: https://github.com/SaintHossam/
 
 ---
@@ -567,5 +594,6 @@ This plugin is free software; you can redistribute it and/or modify it under the
 ## Credits
 
 Developed by **Hossam Hamdy (SaintHossam)**
+
 - GitHub: https://github.com/SaintHossam/
-- Plugin Repository: https://github.com/SaintHossam/wp-stock-notifications-pro
+- Plugin Repository: https://github.com/SaintHossam/stock-notifications-pro

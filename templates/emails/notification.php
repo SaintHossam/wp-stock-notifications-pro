@@ -2,7 +2,7 @@
 /**
  * Email Template - Stock Notification
  *
- * @package WPStockNotificationsPro
+ * @package StockNotificationsPro
  * @var object $subscriber Subscriber data
  * @var \WC_Product $product Product object
  * @var string $site_name Site name
